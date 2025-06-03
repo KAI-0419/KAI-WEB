@@ -7,7 +7,6 @@ import { Menu, X, Globe } from "lucide-react"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/language-provider"
-import { motion } from "framer-motion"
 
 const navText = {
   ko: {
@@ -46,7 +45,7 @@ const Navbar = () => {
         setIsScrolled(false)
       }
 
-      // Update active section based on scroll position
+      // 스크롤 위치에 따른 활성 섹션 업데이트 - 스로틀링 적용
       const sections = ["about", "projects", "skills", "experience", "certificates", "contact"]
       const currentSection = sections.find(section => {
         const element = document.getElementById(section)
@@ -56,12 +55,27 @@ const Navbar = () => {
         }
         return false
       })
-      setActiveSection(currentSection || '')
+      
+      if (currentSection !== activeSection) {
+        setActiveSection(currentSection || '')
+      }
     }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    // 스크롤 이벤트 스로틀링
+    let ticking = false;
+    const scrollListener = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", scrollListener)
+    return () => window.removeEventListener("scroll", scrollListener)
+  }, [activeSection])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -235,30 +249,24 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMobile && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ 
-            opacity: isMenuOpen ? 1 : 0,
-            y: isMenuOpen ? 0 : -20
-          }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+        <div
           className={cn(
             "absolute top-full left-0 right-0 bg-gradient-to-b from-white/40 to-white/30 dark:from-background/40 dark:to-background/30 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] rounded-2xl mt-2 border border-white/20 dark:border-white/10",
-            isMenuOpen ? "visible" : "invisible"
+            isMenuOpen ? "visible opacity-100 translate-y-0" : "invisible opacity-0 -translate-y-4"
           )}
+          style={{ transition: "opacity 0.3s ease, transform 0.3s ease, visibility 0.3s" }}
         >
           <nav className="container mx-auto px-6 py-4">
-            <ul className="flex flex-col gap-2 font-medium">
+            <ul className="flex flex-col gap-2">
               {["about", "projects", "skills", "experience", "certificates", "contact"].map((item) => (
-                <li key={item} className="relative">
+                <li key={item}>
                   <Button
                     variant="ghost"
                     className={cn(
-                      "w-full justify-start capitalize px-4 py-2 h-10 flex items-center font-medium tracking-wide text-sm bg-transparent hover:bg-white/20 dark:hover:bg-white/10 hover:text-accent-foreground transition-all duration-300 after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-gradient-to-r from-pink-500 via-blue-500 to-violet-500 after:rounded-full after:transition-all hover:after:w-3/4 focus-visible:after:w-3/4",
-                      activeSection === item && "text-accent-foreground after:w-3/4"
+                      "w-full justify-start text-left capitalize px-4 py-2 h-10 flex items-center font-medium tracking-wide text-base hover:bg-white/20 dark:hover:bg-white/10 transition-colors",
+                      activeSection === item && "bg-white/10 dark:bg-white/5 text-accent-foreground"
                     )}
                     onClick={() => scrollToSection(item)}
-                    aria-label={(navText[language] as Record<string, string>)[item]}
                   >
                     {(navText[language] as Record<string, string>)[item]}
                   </Button>
@@ -266,7 +274,7 @@ const Navbar = () => {
               ))}
             </ul>
           </nav>
-        </motion.div>
+        </div>
       )}
     </header>
   )
