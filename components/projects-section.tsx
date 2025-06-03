@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -44,7 +44,7 @@ const projects = [
       ko: "교육 콘텐츠를 만들고 관리하는 데 필요한 모든 도구를 제공하는 교육 플랫폼입니다.",
       en: "An educational platform that provides all the tools needed to create and manage educational content.",
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/poin.png?height=400&width=600",
     tags: ["Vue.js", "JavaScript", "API Integration", "UI/UX"],
     role: "Frontend Developer Intern",
     company: "PoinBlack",
@@ -124,7 +124,7 @@ const projects = [
       ko: "사용자를 스포츠 시설, 레슨, 다른 플레이어와 연결하는 스포츠 매칭 및 시설 예약 플랫폼입니다.",
       en: "A sports matching and facility reservation platform that connects users with sports facilities, lessons, and other players.",
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/letpl.png?height=400&width=600",
     tags: ["JavaScript", "Kakao Maps API", "OAuth", "GitHub"],
     role: "Frontend Developer",
     period: "Dec 2022 - Feb 2023",
@@ -188,7 +188,7 @@ const projects = [
       ko: "UI/UX를 개선하고 평가자 만족도를 크게 향상시킨 코딩 교육 지원 플랫폼입니다.",
       en: "A coding education support platform that improved UI/UX and led to a significant increase in evaluator satisfaction.",
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/codeship.png?height=400&width=600",
     tags: ["UI/UX", "Team Leadership", "Problem Solving"],
     role: "Team Leader",
     period: "Sep 2022",
@@ -242,7 +242,7 @@ const projects = [
   },
 ]
 
-const ProjectsSection = () => {
+function ProjectsSection() {
   const { language } = useLanguage()
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState("overview")
@@ -274,7 +274,7 @@ const ProjectsSection = () => {
   const currentProject = projects.find((p) => p.id === selectedProject)
 
   return (
-    <section id="projects" className="relative py-24 bg-muted/30 overflow-hidden">
+    <div id="projects" className="relative py-24 bg-muted/30 overflow-hidden">
       {/* Gradient blob background for section heading */}
       <div className="absolute left-1/2 top-0 -translate-x-1/2 -z-10 w-[420px] h-[220px] bg-gradient-to-br from-pink-400/40 via-orange-200/30 to-transparent rounded-full blur-3xl opacity-70" />
       <div className="container mx-auto px-4">
@@ -310,35 +310,41 @@ const ProjectsSection = () => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: idx * 0.1 }}
-              className="relative group rounded-3xl overflow-hidden shadow-2xl border-2 border-primary/10 bg-white/60 dark:bg-background/60 backdrop-blur-2xl hover:scale-[1.03] hover:shadow-pink-400/40 hover:border-accent/70 transition-all duration-300 animate-fade-in-up"
+              className="relative group rounded-3xl overflow-hidden shadow-2xl border-2 border-primary/10 bg-white/60 dark:bg-background/60 backdrop-blur-2xl hover:scale-[1.03] hover:shadow-pink-400/40 hover:border-accent/70 transition-all duration-300 animate-fade-in-up flex flex-col"
             >
               {/* Project image with overlay */}
-              <div className="relative h-48 w-full overflow-hidden">
+              <div className="relative h-52 w-full overflow-hidden">
                 <img
                   src={project.image}
                   alt={project[language]?.title || project.ko?.title || project.en?.title}
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain bg-gray-50 dark:bg-gray-900/50 group-hover:scale-102 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-pink-300/30 via-transparent to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-300 z-10" />
               </div>
-              <CardContent className="p-8 md:p-10">
-                <h3 className="text-xl font-bold mb-2 text-primary/90 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-700 via-orange-600 to-primary">
-                  {project[language]?.title || project.ko?.title || project.en?.title}
-                </h3>
-                <p className="text-muted-foreground mb-4 min-h-[48px]">
-                  {project.description[language]}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 bg-pink-100/40 text-pink-700 rounded-full text-xs font-medium shadow-sm hover:scale-105 transition-transform border border-pink-200/60"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+              
+              <CardContent className="p-8 md:p-10 flex flex-col flex-grow">
+                <div className="flex-grow">
+                  <h3 className="text-xl font-bold mb-2 text-primary/90 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-700 via-orange-600 to-primary">
+                    {project[language]?.title || project.ko?.title || project.en?.title}
+                  </h3>
+                  <div className="h-[80px] mb-4 overflow-hidden">
+                    <p className="text-muted-foreground">
+                      {project.description[language]}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 h-[60px] mb-4">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 bg-pink-100/40 text-pink-700 rounded-full text-xs font-medium shadow-sm hover:scale-105 transition-transform border border-pink-200/60"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex items-center justify-between mt-4">
+                
+                <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex gap-2">
                     {project.links.live && (
                       <Button
@@ -365,6 +371,9 @@ const ProjectsSection = () => {
                           <Github className="h-4 w-4" />
                         </a>
                       </Button>
+                    )}
+                    {!project.links.live && !project.links.github && (
+                      <div className="w-[72px]"></div>
                     )}
                   </div>
                   <Button
@@ -399,7 +408,7 @@ const ProjectsSection = () => {
                 <img
                   src={currentProject.image || "/placeholder.svg"}
                   alt={currentProject[language]?.title || currentProject.ko?.title || currentProject.en?.title}
-                  className="w-full h-64 object-cover rounded-md mb-6 shadow-lg"
+                  className="w-full h-72 object-contain bg-gray-50 dark:bg-gray-900/50 rounded-md mb-6 shadow-lg"
                 />
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
                   <TabsList className="w-full bg-primary/10 rounded-lg mb-4">
@@ -463,7 +472,7 @@ const ProjectsSection = () => {
           )}
         </DialogContent>
       </Dialog>
-    </section>
+    </div>
   )
 }
 

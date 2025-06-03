@@ -122,7 +122,7 @@ const skills = {
 
 const experience = [
   { value: "<1", label: "years" },
-  { value: "10+", label: "projects" },
+  { value: "15+", label: "projects" },
   { value: "5+", label: "lead" },
 ]
 
