@@ -45,9 +45,9 @@ npm run dev
 
 ## 🙋‍♂️ Author · 작성자
 
-**Kai Lee** / **이강현** – Front-End Developer / 프론트엔드 개발자
+**Kai Lee** – Front-End Developer
 
-* Portfolio / 포트폴리오 : [https://kaiweby.netlify.app/](https://kaiweby.netlify.app/)
+* Portfolio : [https://kaiweby.netlify.app/](https://kaiweby.netlify.app/)
 * LinkedIn : [https://linkedin.com/in/kai0419](https://linkedin.com/in/kai0419)
 * GitHub  : [https://github.com/KAI-0419](https://github.com/KAI-0419)
 
